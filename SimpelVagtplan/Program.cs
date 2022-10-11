@@ -1,9 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SimpelVagtplan.Data;
+using SimpelVagtplan.Models;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<SimpelVagtplanContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SimpelVagtplanContext") ?? throw new InvalidOperationException("Connection string 'SimpelVagtplanContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
