@@ -16,7 +16,7 @@ namespace SimpelVagtplan.Models
             {
                 SeedMedarbejdere(context);
                 SeedOpgaver(context);
-                
+                SeedVagter(context);
             }
         }
 
@@ -66,6 +66,22 @@ namespace SimpelVagtplan.Models
                 {
                     Name = "Claus Padkær",
                     Age = 18
+                }
+            );
+            context.SaveChanges();
+        }
+        private static void SeedVagter(SimpelVagtplanContext context)
+        {
+            if (context.Vagt.Any())
+            {
+                return;
+            }
+            context.Vagt.AddRange(
+                new Vagt
+                {
+                    Medarbejder = context.Medarbejder.First(),
+                    StartTime = new DateTime(2022, 10, 13, 15, 0, 0),
+                    EndTime = new DateTime(2022, 10, 13, 16, 0, 0)
                 }
             );
             context.SaveChanges();

@@ -17,5 +17,8 @@ namespace SimpelVagtplan.Data
         public DbSet<SimpelVagtplan.Models.Medarbejder> Medarbejder { get; set; } = default!;
 
         public DbSet<SimpelVagtplan.Models.Opgave> Opgave { get; set; }
+
+        public DbSet<SimpelVagtplan.Models.Vagt> Vagt { get; set; }
+
     }
 }
