@@ -24,6 +24,7 @@ namespace SimpelVagtplan.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.medarbejdere = _context.Medarbejder.ToList();
+            ViewBag.opgaver = _context.Opgave.ToList();
             return View(await _context.Vagt.ToListAsync());
         }
 
@@ -119,6 +120,45 @@ namespace SimpelVagtplan.Controllers
             return View(vagt);
         }
 
+        
+        public async Task<IActionResult> AddOpgave(int id)
+        {
+
+            ViewBag.medarbejdere = _context.Medarbejder.ToList();
+            ViewBag.opgaver = _context.Opgave.ToList().Where(o => o.vagt == null);
+            return View(await _context.Vagt.FindAsync(id));
+        }
+
+        public async Task<IActionResult> AddOpgaveToVagt(int vagtId, int opgaveId)
+        {
+            var opgave = await _context.Opgave.FindAsync(opgaveId);
+            var vagt = await _context.Vagt.FindAsync(vagtId);
+            opgave.vagt = vagt;
+            try
+            {
+                _context.Update(opgave);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> RemoveOpgave(int id)
+        {
+            var opgave = await _context.Opgave.FindAsync(id);
+            
+            
+            opgave.vagt = null;
+            _context.Update(opgave);
+            
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            
+        }
         // GET: Vagter/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

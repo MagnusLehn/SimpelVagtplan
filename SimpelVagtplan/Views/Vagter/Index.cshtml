@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.EndTime)
             </th>
+            <th>
+                Opgaver
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,11 +40,28 @@
                 @Html.DisplayFor(modelItem => item.EndTime)
             </td>
             <td>
+                @foreach(Opgave opgave in ViewBag.opgaver)
+            {
+                if (opgave.vagt != null && opgave.vagt.Equals(item))
+                {
+                    @opgave.Title 
+
+                    @*
+                        
+                    <a asp-action="RemoveOpgave" asp-route-id="@opgave.Id" >Delete</a>
+                    <br />*@            
+                }
+                
+            }
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="AddOpgave" asp-route-id="@item.Id">Add Opgave</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+            
+        }
     </tbody>
 </table>

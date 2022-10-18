@@ -1,0 +1,35 @@
+﻿@model SimpelVagtplan.Models.Vagt
+
+@{
+    ViewData["Title"] = "AddOpgave";
+}
+
+<h1>Add Opgave</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Opgaver
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Opgave opgave in ViewBag.opgaver)
+        {
+            if(opgave.AgeLimit < Model.Medarbejder.Age)
+            {
+                <tr>
+                    <td>
+                    @opgave.Title
+                    <a asp-action="AddOpgaveToVagt" asp-route-vagtId="@Model.Id" asp-route-opgaveId="@opgave.Id">Add Opgave</a>
+                    </td>
+                </tr> 
+            }
+        } 
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
